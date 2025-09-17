@@ -47,6 +47,14 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        /* FlagForge Custom Colors */
+        cyber: {
+          green: "hsl(var(--cyber-green))",
+          orange: "hsl(var(--cyber-orange))",
+        },
+        tech: {
+          pattern: "hsl(var(--tech-pattern))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -57,6 +65,20 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+      },
+      backgroundImage: {
+        "gradient-primary": "var(--gradient-primary)",
+        "gradient-cyber": "var(--gradient-cyber)", 
+        "gradient-dark": "var(--gradient-dark)",
+      },
+      boxShadow: {
+        "cyber": "var(--shadow-cyber)",
+        "glow": "var(--shadow-glow)",
+        "card-custom": "var(--shadow-card)",
+      },
+      transitionTimingFunction: {
+        "smooth": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "bounce": "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
       },
       borderRadius: {
         lg: "var(--radius)",

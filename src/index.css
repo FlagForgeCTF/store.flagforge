@@ -8,35 +8,55 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
+    /* FlagForge Brand Colors */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 209 18% 30%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 209 18% 30%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 209 18% 30%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 0 73% 50%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217 32% 17%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 221 83% 53%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 0 73% 50%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Custom FlagForge Design Tokens */
+    --cyber-green: 142 76% 36%;
+    --cyber-orange: 25 95% 53%;
+    --tech-pattern: 220 26% 14%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    --gradient-cyber: linear-gradient(135deg, hsl(var(--cyber-green)), hsl(var(--accent)));
+    --gradient-dark: linear-gradient(135deg, hsl(var(--secondary)), hsl(220 26% 14%));
+    
+    /* Shadows */
+    --shadow-cyber: 0 10px 40px -10px hsl(var(--primary) / 0.3);
+    --shadow-glow: 0 0 30px hsl(var(--accent) / 0.4);
+    --shadow-card: 0 4px 20px -4px hsl(220 26% 14% / 0.1);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --sidebar-background: 0 0% 98%;
 
@@ -56,33 +76,33 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 220 26% 14%;
+    --foreground: 220 13% 91%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 217 32% 17%;
+    --card-foreground: 220 13% 91%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 217 32% 17%;
+    --popover-foreground: 220 13% 91%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 0 73% 50%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 217 32% 17%;
+    --secondary-foreground: 220 13% 91%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 217 19% 27%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 221 83% 53%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 217 19% 27%;
+    --input: 217 19% 27%;
+    --ring: 0 73% 50%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -101,5 +121,40 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  /* Cybersecurity themed components */
+  .cyber-grid {
+    background-image: 
+      linear-gradient(rgba(34, 197, 94, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34, 197, 94, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  
+  .binary-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2322c55e' fill-opacity='0.05'%3E%3Ctext x='10' y='25' font-family='monospace' font-size='12'%3E01%3C/text%3E%3Ctext x='35' y='45' font-family='monospace' font-size='12'%3E10%3C/text%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  
+  .tech-glow {
+    box-shadow: var(--shadow-cyber);
+    transition: var(--transition-smooth);
+  }
+  
+  .tech-glow:hover {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+  
+  .gradient-cyber {
+    background: var(--gradient-cyber);
+  }
+  
+  .gradient-dark {
+    background: var(--gradient-dark);
   }
 }
