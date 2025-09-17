@@ -157,4 +157,42 @@ All colors MUST be HSL.
   .gradient-dark {
     background: var(--gradient-dark);
   }
+
+  /* Product Card Styles */
+  .product-wrapper {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .product-element-top {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.5rem;
+  }
+  
+  .product-image-link img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .product-wrapper:hover .product-image-link img {
+    transform: scale(1.05);
+  }
+  
+  .wd-swatches-grid .wd-swatch span {
+    transition: all 0.2s ease;
+  }
+  
+  .wd-entities-title a {
+    transition: color 0.2s ease;
+  }
+
+  /* Line clamp utility */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 }

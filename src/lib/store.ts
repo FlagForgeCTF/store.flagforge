@@ -37,7 +37,7 @@ export const useStore = create<StoreState>()(
           price: 15,
           image: '/src/assets/tshirt-flagforge.jpg',
           category: 'tshirt',
-          description: 'Show your FlagForge pride with our premium logo tee. Perfect for CTF competitions and daily wear.',
+          description: 'Show your FlagForge pride with our premium logo tee. Perfect for CTF competitions and daily wear. Made from high-quality cotton blend for maximum comfort.',
           sizes: ['S', 'M', 'L', 'XL', 'XXL'],
         },
         {
@@ -46,8 +46,9 @@ export const useStore = create<StoreState>()(
           price: 1,
           image: '/src/assets/stickers-pack.jpg',
           category: 'sticker',
-          description: 'Premium sticker featuring the FlagForge logo and cybersecurity-themed designs.',
+          description: 'Premium waterproof sticker featuring the FlagForge logo and cybersecurity-themed designs. Perfect for laptops, water bottles, and more.',
         },
+
       ],
       cart: [],
       

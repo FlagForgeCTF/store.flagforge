@@ -12,27 +12,22 @@ export function Header() {
 
   const isActive = (path: string) => location.pathname === path;
 
-  const navItems = [
-    { name: "Products", path: "/products" },
-  ];
+  const navItems = [];
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
-      <div className="container mx-auto px-4 py-6">
+      <div className="container mx-auto px-4 py-2">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
             <img
               src="/flagforge-logo.png"
               alt="FlagForge Logo"
-              className="h-16 w-16 object-contain"
+              className="h-17 w-20 object-contain"
             />
             <div>
               <span className="text-2xl font-bold text-foreground">
                 FlagForge
-              </span>
-              <span className="block text-xs text-muted-foreground -mt-1">
-                STORE
               </span>
             </div>
           </Link>
