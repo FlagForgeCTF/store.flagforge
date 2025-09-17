@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Header } from "@/components/Header";
 import { ProductCard } from "@/components/ProductCard";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/lib/store";
+import { Star } from "lucide-react";
 
 export default function Products() {
   const products = useStore((state) => state.products);
@@ -20,7 +22,7 @@ export default function Products() {
         {/* Header */}
         <div className="text-center space-y-4 mb-12">
           <h1 className="text-4xl md:text-5xl font-bold">
-            <span className="gradient-primary bg-clip-text text-transparent">
+            <span className="text-foreground">
               FlagForge
             </span>{" "}
             <span className="text-foreground">Collection</span>
@@ -74,6 +76,60 @@ export default function Products() {
           </div>
         )}
       </main>
+      
+      {/* Testimonials Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center space-y-4 mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+              Loved by CTF Champions
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              See what the cybersecurity community says about our gear
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Alex Chen",
+                role: "CTF Team Captain",
+                content: "The FlagForge tees are incredibly comfortable and the designs are top-notch. Perfect for competitions and daily wear!",
+                rating: 5
+              },
+              {
+                name: "Sarah Kim",
+                role: "Security Researcher", 
+                content: "Love the hacker mindset shirt! The quality is amazing and it's a great conversation starter at conferences.",
+                rating: 5
+              },
+              {
+                name: "Mike Rodriguez",
+                role: "Penetration Tester",
+                content: "The sticker pack is perfect for decorating my laptop. High-quality materials and awesome cybersecurity designs.",
+                rating: 5
+              }
+            ].map((testimonial, index) => (
+              <div key={index} className="bg-card p-6 rounded-lg border tech-glow hover:shadow-cyber transition-smooth">
+                <div className="flex items-center space-x-1 mb-4">
+                  {Array.from({ length: testimonial.rating }).map((_, i) => (
+                    <Star key={i} className="w-4 h-4 text-yellow-500 fill-current" />
+                  ))}
+                </div>
+                <p className="text-muted-foreground mb-4">
+                  "{testimonial.content}"
+                </p>
+                <div>
+                  <div className="font-semibold text-foreground">{testimonial.name}</div>
+                  <div className="text-sm text-muted-foreground">{testimonial.role}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      
+      <Footer />
     </div>
   );
 }

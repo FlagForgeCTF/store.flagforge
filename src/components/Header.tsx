@@ -1,4 +1,4 @@
-import { ShoppingCart, Shield, Menu } from "lucide-react";
+import { ShoppingCart, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./ThemeToggle";
 import { useStore } from "@/lib/store";
@@ -13,20 +13,22 @@ export function Header() {
   const isActive = (path: string) => location.pathname === path;
 
   const navItems = [
-    { name: 'Home', path: '/' },
-    { name: 'Products', path: '/products' },
-    { name: 'About', path: '/about' },
+    { name: "Products", path: "/products" },
   ];
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-4 py-6">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <Shield className="h-8 w-8 text-primary" />
+          <Link to="/" className="flex items-center space-x-3">
+            <img
+              src="/flagforge-logo.png"
+              alt="FlagForge Logo"
+              className="h-16 w-16 object-contain"
+            />
             <div>
-              <span className="text-2xl font-bold gradient-primary bg-clip-text text-transparent">
+              <span className="text-2xl font-bold text-foreground">
                 FlagForge
               </span>
               <span className="block text-xs text-muted-foreground -mt-1">
@@ -42,9 +44,7 @@ export function Header() {
                 key={item.name}
                 to={item.path}
                 className={`relative px-3 py-2 text-sm font-medium transition-smooth hover:text-primary ${
-                  isActive(item.path) 
-                    ? 'text-primary' 
-                    : 'text-muted-foreground'
+                  isActive(item.path) ? "text-primary" : "text-muted-foreground"
                 }`}
               >
                 {item.name}
@@ -58,10 +58,10 @@ export function Header() {
           {/* Right Side Actions */}
           <div className="flex items-center space-x-4">
             <ThemeToggle />
-            
-            <Button 
-              variant="outline" 
-              size="icon" 
+
+            <Button
+              variant="outline"
+              size="icon"
               className="relative tech-glow"
             >
               <ShoppingCart className="h-4 w-4" />
@@ -95,9 +95,9 @@ export function Header() {
                   key={item.name}
                   to={item.path}
                   className={`px-3 py-2 text-sm font-medium transition-smooth hover:text-primary ${
-                    isActive(item.path) 
-                      ? 'text-primary bg-primary/10 rounded-lg' 
-                      : 'text-muted-foreground'
+                    isActive(item.path)
+                      ? "text-primary bg-primary/10 rounded-lg"
+                      : "text-muted-foreground"
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >

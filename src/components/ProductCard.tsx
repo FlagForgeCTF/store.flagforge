@@ -34,20 +34,20 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <Card className="group hover:shadow-cyber transition-smooth tech-glow">
+    <Card className="group hover:shadow-cyber transition-all duration-500 ease-out tech-glow">
       <CardContent className="p-6">
         <div className="aspect-square relative overflow-hidden rounded-lg bg-muted mb-4">
           <img
             src={product.image}
             alt={product.name}
-            className="object-cover w-full h-full group-hover:scale-105 transition-smooth"
+            className="object-cover w-full h-full group-hover:scale-110 transition-all duration-700 ease-out"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-smooth" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
         </div>
         
         <div className="space-y-4">
           <div>
-            <h3 className="font-bold text-lg text-foreground group-hover:text-primary transition-smooth">
+            <h3 className="font-bold text-lg text-foreground group-hover:text-primary transition-all duration-300 ease-out">
               {product.name}
             </h3>
             <p className="text-sm text-muted-foreground line-clamp-2">
@@ -109,7 +109,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
           <Button 
             onClick={handleAddToCart}
-            className="w-full tech-glow transition-bounce hover:scale-105"
+            className="w-full tech-glow transition-all duration-300 ease-out hover:shadow-lg"
           >
             <ShoppingCart className="w-4 h-4 mr-2" />
             Add to Cart
