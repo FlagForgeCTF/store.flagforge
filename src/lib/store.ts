@@ -33,7 +33,7 @@ export const useStore = create<StoreState>()(
       products: [
         {
           id: '1',
-          name: 'FlagForge Logo Tee',
+          name: 'FlagForge Tshirt',
           price: 15,
           image: '/src/assets/tshirt-flagforge.jpg',
           category: 'tshirt',
@@ -42,7 +42,7 @@ export const useStore = create<StoreState>()(
         },
         {
           id: '2',
-          name: 'FlagForge Logo Sticker',
+          name: 'FlagForge Sticker',
           price: 1,
           image: '/src/assets/stickers-pack.jpg',
           category: 'sticker',

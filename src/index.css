@@ -8,51 +8,50 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* FlagForge Brand Colors */
-    --background: 0 0% 100%;
-    --foreground: 209 18% 30%;
+    /* FlagForge Brand Colors - Light Mode */
+    --background: 0 0% 100%; /* white #ffffff */
+    --foreground: 220 9% 9%; /* gray-900 #111827 */
 
-    --card: 0 0% 100%;
-    --card-foreground: 209 18% 30%;
+    --card: 0 0% 100%; /* white #ffffff */
+    --card-foreground: 220 9% 9%; /* gray-900 #111827 */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 209 18% 30%;
+    --popover: 0 0% 100%; /* white #ffffff */
+    --popover-foreground: 220 9% 9%; /* gray-900 #111827 */
 
-    --primary: 0 73% 50%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 0 84% 60%; /* red-500 #ef4444 */
+    --primary-foreground: 0 0% 100%; /* white */
 
-    --secondary: 217 32% 17%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%; /* gray-50 #f9fafb */
+    --secondary-foreground: 220 9% 9%; /* gray-900 #111827 */
 
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 210 40% 96%; /* gray-50 #f9fafb */
+    --muted-foreground: 220 5% 42%; /* gray-600 #4b5563 */
 
-    --accent: 221 83% 53%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 0 84% 60%; /* red-500 #ef4444 */
+    --accent-foreground: 0 0% 100%; /* white */
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%; /* red-500 #ef4444 */
+    --destructive-foreground: 0 0% 100%; /* white */
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 0 73% 50%;
+    --border: 220 13% 91%; /* gray-200 #e5e7eb */
+    --input: 220 13% 91%; /* gray-200 #e5e7eb */
+    --ring: 0 84% 60%; /* red-500 #ef4444 */
 
     --radius: 0.75rem;
 
     /* Custom FlagForge Design Tokens */
-    --cyber-green: 142 76% 36%;
-    --cyber-orange: 25 95% 53%;
-    --tech-pattern: 220 26% 14%;
+    --brand-red: 0 84% 60%; /* red-500 #ef4444 */
+    --tech-pattern: 220 9% 9%; /* gray-900 #111827 */
     
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
-    --gradient-cyber: linear-gradient(135deg, hsl(var(--cyber-green)), hsl(var(--accent)));
-    --gradient-dark: linear-gradient(135deg, hsl(var(--secondary)), hsl(220 26% 14%));
+    --gradient-primary: linear-gradient(135deg, hsl(0 84% 60%), hsl(0 84% 55%));
+    --gradient-cyber: linear-gradient(135deg, hsl(0 84% 60%), hsl(220 5% 42%));
+    --gradient-dark: linear-gradient(135deg, hsl(215 25% 17%), hsl(220 9% 9%));
     
     /* Shadows */
-    --shadow-cyber: 0 10px 40px -10px hsl(var(--primary) / 0.3);
-    --shadow-glow: 0 0 30px hsl(var(--accent) / 0.4);
-    --shadow-card: 0 4px 20px -4px hsl(220 26% 14% / 0.1);
+    --shadow-cyber: 0 10px 40px -10px hsl(0 84% 60% / 0.3);
+    --shadow-glow: 0 0 30px hsl(0 84% 60% / 0.4);
+    --shadow-card: 0 4px 20px -4px hsl(220 9% 9% / 0.1);
     
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -76,65 +75,79 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 220 26% 14%;
-    --foreground: 220 13% 91%;
+    --background: 220 9% 9%; /* gray-900 #111827 */
+    --foreground: 0 0% 100%; /* white #ffffff */
 
-    --card: 217 32% 17%;
-    --card-foreground: 220 13% 91%;
+    --card: 215 25% 17%; /* gray-800 #1f2937 */
+    --card-foreground: 0 0% 100%; /* white #ffffff */
 
-    --popover: 217 32% 17%;
-    --popover-foreground: 220 13% 91%;
+    --popover: 215 25% 17%; /* gray-800 #1f2937 */
+    --popover-foreground: 0 0% 100%; /* white #ffffff */
 
-    --primary: 0 73% 50%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 0 84% 60%; /* red-500 #ef4444 */
+    --primary-foreground: 0 0% 100%; /* white */
 
-    --secondary: 217 32% 17%;
-    --secondary-foreground: 220 13% 91%;
+    --secondary: 215 25% 17%; /* gray-800 #1f2937 */
+    --secondary-foreground: 220 13% 83%; /* gray-300 #d1d5db */
 
-    --muted: 217 19% 27%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 215 25% 17%; /* gray-800 #1f2937 */
+    --muted-foreground: 220 9% 62%; /* gray-400 #9ca3af */
 
-    --accent: 221 83% 53%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 0 84% 60%; /* red-500 #ef4444 */
+    --accent-foreground: 0 0% 100%; /* white */
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%; /* red-500 #ef4444 */
+    --destructive-foreground: 0 0% 100%; /* white */
 
-    --border: 217 19% 27%;
-    --input: 217 19% 27%;
-    --ring: 0 73% 50%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 215 20% 37%; /* gray-700 #374151 */
+    --input: 215 20% 37%; /* gray-700 #374151 */
+    --ring: 0 84% 60%; /* red-500 #ef4444 */
+    --sidebar-background: 220 9% 9%; /* gray-900 #111827 */
+    --sidebar-foreground: 0 0% 100%; /* white #ffffff */
+    --sidebar-primary: 0 84% 60%; /* red-500 #ef4444 */
+    --sidebar-primary-foreground: 0 0% 100%; /* white */
+    --sidebar-accent: 215 25% 17%; /* gray-800 #1f2937 */
+    --sidebar-accent-foreground: 220 13% 83%; /* gray-300 #d1d5db */
+    --sidebar-border: 215 20% 37%; /* gray-700 #374151 */
+    --sidebar-ring: 0 84% 60%; /* red-500 #ef4444 */
   }
 }
 
 @layer base {
   * {
     @apply border-border;
+    transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  html {
+    transition: color-scheme 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   body {
     @apply bg-background text-foreground;
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Smooth transitions for all theme-aware elements */
+  [class*="bg-"], [class*="text-"], [class*="border-"] {
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
 @layer components {
-  /* Cybersecurity themed components */
+  /* Modern design system components */
   .cyber-grid {
     background-image: 
-      linear-gradient(rgba(34, 197, 94, 0.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(34, 197, 94, 0.1) 1px, transparent 1px);
+      linear-gradient(rgba(239, 68, 68, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(239, 68, 68, 0.1) 1px, transparent 1px);
     background-size: 20px 20px;
   }
   
   .binary-pattern {
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2322c55e' fill-opacity='0.05'%3E%3Ctext x='10' y='25' font-family='monospace' font-size='12'%3E01%3C/text%3E%3Ctext x='35' y='45' font-family='monospace' font-size='12'%3E10%3C/text%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ef4444' fill-opacity='0.05'%3E%3Ctext x='10' y='25' font-family='monospace' font-size='12'%3E01%3C/text%3E%3Ctext x='35' y='45' font-family='monospace' font-size='12'%3E10%3C/text%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
   
   .tech-glow {
@@ -194,5 +207,38 @@ All colors MUST be HSL.
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  /* Enhanced hover transitions for common elements */
+  .hover-lift {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+  
+  .hover-scale {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .hover-scale:hover {
+    transform: scale(1.05);
+  }
+  
+  .hover-glow {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .hover-glow:hover {
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+  }
+
+  /* Smooth theme transition for all elements */
+  * {
+    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
   }
 }

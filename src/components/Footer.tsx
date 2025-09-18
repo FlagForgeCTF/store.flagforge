@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import {
-  LinkedinIcon,
-  InstagramIcon,
-  GithubIcon,
+  Linkedin,
+  Instagram,
+  Github,
   ShoppingBag,
   Mail,
 } from "lucide-react";
@@ -12,35 +12,35 @@ export default function Footer() {
     {
       name: "LinkedIn",
       url: "https://www.linkedin.com/company/flagforge/",
-      icon: <LinkedinIcon className="w-5 h-5 text-[#0077B5]" />,
+      icon: <Linkedin className="w-5 h-5 text-[#0077B5]" />,
     },
     {
       name: "Instagram",
       url: "https://www.instagram.com/flag.forge/",
-      icon: <InstagramIcon className="w-5 h-5 text-[#E4405F]" />,
+      icon: <Instagram className="w-5 h-5 text-[#E4405F]" />,
     },
     {
       name: "GitHub",
       url: "https://github.com/FlagForgeCTF/",
-      icon: <GithubIcon className="w-5 h-5 text-[#181717] dark:text-[#ffffff]" />,
+      icon: <Github className="w-5 h-5 text-[#181717] dark:text-[#ffffff]" />,
     },
   ];
 
   return (
-    <footer className="bg-background transition-colors duration-300">
-      <div className="container mx-auto px-4 py-8">
+    <footer className="bg-gray-900 dark:bg-gray-900 border-t border-gray-800 dark:border-gray-700 transition-all duration-300 ease-in-out">
+      <div className="container mx-auto px-4 py-12 lg:py-8">
         <div className="sm:flex sm:items-center sm:justify-between relative">
           {/* Brand Section */}
           <Link
             to="/"
             className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
           >
-            <img src="/flagforge-logo.png" alt="logo" height={60} width={60} className="h-15 w-15" />
+            <img src="/flagforge-logo.png" alt="logo" className="h-12 w-auto" />
             <div>
-              <span className="self-center text-2xl font-semibold whitespace-nowrap text-foreground transition-colors duration-300">
+              <span className="self-center text-xl font-semibold whitespace-nowrap text-gray-300">
                 FlagForge
               </span>
-              <span className="block text-xs text-muted-foreground -mt-1">
+              <span className="block text-xs text-gray-400 pt-1">
                 STORE
               </span>
             </div>
@@ -54,7 +54,7 @@ export default function Footer() {
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 rounded-lg hover:bg-muted transition-colors duration-300"
+                className="p-2 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-800 transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-lg"
                 aria-label={`Visit our ${social.name} page`}
               >
                 {social.icon}
@@ -63,54 +63,48 @@ export default function Footer() {
           </div>
 
           {/* Quick Links */}
-          <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-muted-foreground sm:mb-0 transition-colors duration-300">
+          <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-400 sm:mb-0">
             <li>
-              <Link to="/products" className="hover:underline me-4 md:me-6">
-                Products
-              </Link>
-            </li>
-            <li>
-              <Link to="/shipping" className="hover:underline me-4 md:me-6">
+              <Link to="/shipping" className="hover:text-red-500 transition-all duration-300 ease-in-out hover:scale-105 me-4 md:me-6">
                 Shipping
               </Link>
             </li>
             <li>
-              <Link to="/contact" className="hover:underline me-4 md:me-6">
+              <Link to="/contact" className="hover:text-red-500 transition-all duration-300 ease-in-out hover:scale-105 me-4 md:me-6">
                 Contact
               </Link>
             </li>
             <li>
               <Link
                 to="/privacy-policy"
-                className="hover:underline me-4 md:me-6"
+                className="hover:text-red-500 transition-all duration-300 ease-in-out hover:scale-105 me-4 md:me-6"
               >
-                Privacy
-              </Link>
-            </li>
-            <li>
-              <Link to="/terms" className="hover:underline">
-                Terms
+                Privacy Policy
               </Link>
             </li>
           </ul>
         </div>
 
-        <hr className="my-6 border-border sm:mx-auto lg:my-3 transition-colors duration-300" />
+        <hr className="my-6 border-gray-800 dark:border-gray-700 sm:mx-auto lg:my-8" />
 
         {/* Bottom Section */}
-        <div className="flex flex-col md:flex-row items-center justify-between space-y-2 md:space-y-0">
-          <span className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} FlagForge Store. All rights reserved.
+        <div className="flex flex-col md:flex-row items-center justify-between space-y-2 md:space-y-0 relative">
+          <div className="hidden md:block"></div>
+          <span className="text-[14px] text-gray-400 absolute left-1/2 transform -translate-x-1/2">
+            © Maintained By Shyena Inc.
           </span>
-          <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+          <div className="flex items-center space-x-4 text-sm text-gray-400">
             <span className="flex items-center">
               <ShoppingBag className="w-4 h-4 mr-1" />
               Secure checkout
             </span>
-            <span className="flex items-center">
+            <a
+              href="mailto:contact@flagforge.xyz"
+              className="flex items-center hover:text-red-500"
+            >
               <Mail className="w-4 h-4 mr-1" />
               contact@flagforge.xyz
-            </span>
+            </a>
           </div>
         </div>
       </div>

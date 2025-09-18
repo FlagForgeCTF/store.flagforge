@@ -25,11 +25,11 @@ An e-commerce platform for FlagForge cybersecurity merchandise, offering premium
 ## 🛍️ Products
 
 ### T-shirt
-- FlagForge Logo Tee
+- FlagForge Tshirt
 - Your Name on the back
 
 ### Stickers
-- FlagForge Logo Sticker Pack
+- FlagForge Sticker Pack
 - Binary Code Sticker
 - Lock Icon Sticker
 
