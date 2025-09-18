@@ -8,6 +8,13 @@ import {
 } from "lucide-react";
 
 export default function Footer() {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   const socialLinks = [
     {
       name: "LinkedIn",
@@ -65,8 +72,8 @@ export default function Footer() {
           {/* Quick Links */}
           <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-600 dark:text-gray-400 sm:mb-0">
             <li>
-              <Link to="/shipping" className="hover:text-red-500 transition-all duration-300 ease-in-out hover:scale-105 me-4 md:me-6">
-                Shipping
+              <Link to="/cart" className="hover:text-red-500 transition-all duration-300 ease-in-out hover:scale-105 me-4 md:me-6">
+                Cart
               </Link>
             </li>
             <li>
@@ -77,6 +84,7 @@ export default function Footer() {
             <li>
               <Link
                 to="/privacy-policy"
+                onClick={scrollToTop}
                 className="hover:text-red-500 transition-all duration-300 ease-in-out hover:scale-105 me-4 md:me-6"
               >
                 Privacy Policy
