@@ -21,10 +21,10 @@ export default function Products() {
       {/* Hero Section */}
       <section className="bg-white dark:bg-gray-900 py-20 lg:py-12 transition-colors duration-300 ease-in-out">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl lg:text-6xl font-bold mb-6 transition-all duration-500 ease-in-out hover:scale-105">
-  <span className="text-red-500 transition-colors duration-300 ease-in-out">FlagForge</span>{' '}
-  <span className="text-gray-900 dark:text-white transition-colors duration-300 ease-in-out">Collection</span>
-</h1>
+          <h1 className="text-4xl lg:text-6xl font-bold mb-6 transition-all duration-500 ease-in-out">
+            <span className="text-red-500 transition-colors duration-300 ease-in-out">FlagForge</span>{' '}
+            <span className="text-gray-900 dark:text-white transition-colors duration-300 ease-in-out">Collection</span>
+          </h1>
 
           <p className="text-xl lg:text-2xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto transition-colors duration-300 ease-in-out">
             Premium cybersecurity merchandise for CTF champions

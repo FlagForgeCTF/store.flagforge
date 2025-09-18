@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useStore } from "@/lib/store";
-import { ShoppingCart, Plus, Minus, ArrowLeft, Heart } from "lucide-react";
+import { ShoppingCart, Plus, Minus, ArrowLeft, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function ProductDetail() {
@@ -14,9 +14,43 @@ export default function ProductDetail() {
   const addToCart = useStore((state) => state.addToCart);
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [quantity, setQuantity] = useState(1);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isImageHovered, setIsImageHovered] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const { toast } = useToast();
 
   const product = products.find((p) => p.id === id);
+
+  // Get images for the product - add back image for t-shirt (product ID "1")
+  const getProductImages = () => {
+    if (!product) return [];
+    
+    const images = [product.image];
+    
+    // Add back image for FlagForge t-shirt (product ID "1")
+    if (product.id === "1" && product.category === "tshirt") {
+      images.push("/src/assets/tshirt-flagforge_back.png");
+    }
+    
+    return images;
+  };
+
+  const productImages = getProductImages();
+
+  const handlePrevImage = () => {
+    setCurrentImageIndex((prev) => (prev === 0 ? productImages.length - 1 : prev - 1));
+  };
+
+  const handleNextImage = () => {
+    setCurrentImageIndex((prev) => (prev === productImages.length - 1 ? 0 : prev + 1));
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setMousePosition({ x, y });
+  };
 
   if (!product) {
     return (
@@ -71,13 +105,91 @@ export default function ProductDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Product Images */}
           <div className="space-y-2">
-            <div className="aspect-square overflow-hidden rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
+            {/* Main Image */}
+            <div 
+              className="relative aspect-[4/4] max-w-md mx-auto overflow-hidden rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 group cursor-zoom-in"
+              onMouseEnter={() => setIsImageHovered(true)}
+              onMouseLeave={() => setIsImageHovered(false)}
+              onMouseMove={handleMouseMove}
+            >
               <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-full object-cover"
+                src={productImages[currentImageIndex]}
+                alt={`${product.name} - ${currentImageIndex === 0 ? 'Front' : 'Back'}`}
+                className={`w-full h-full object-cover transition-transform duration-300 ${
+                  isImageHovered ? 'scale-150' : 'scale-100'
+                }`}
+                style={
+                  isImageHovered
+                    ? {
+                        transformOrigin: `${mousePosition.x}% ${mousePosition.y}%`,
+                      }
+                    : {}
+                }
               />
+              
+              {/* Arrow Navigation - only show if multiple images and on hover */}
+              {productImages.length > 1 && (
+                <>
+                  <button
+                    onClick={handlePrevImage}
+                    className={`absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 transition-all duration-300 ${
+                      isImageHovered ? 'opacity-100' : 'opacity-0'
+                    }`}
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={handleNextImage}
+                    className={`absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 transition-all duration-300 ${
+                      isImageHovered ? 'opacity-100' : 'opacity-0'
+                    }`}
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </>
+              )}
+              
+              {/* Image indicator dots */}
+              {productImages.length > 1 && (
+                <div className={`absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1 transition-opacity duration-300 ${
+                  isImageHovered ? 'opacity-100' : 'opacity-70'
+                }`}>
+                  {productImages.map((_, index) => (
+                    <div
+                      key={index}
+                      className={`w-2 h-2 rounded-full transition-all ${
+                        currentImageIndex === index
+                          ? 'bg-white shadow-lg'
+                          : 'bg-white/50'
+                      }`}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
+            
+            {/* Image Thumbnails - only show if there are multiple images */}
+            {productImages.length > 1 && (
+              <div className="flex justify-center gap-2">
+                {productImages.map((image, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
+                      currentImageIndex === index
+                        ? 'border-red-500 ring-2 ring-red-200 dark:ring-red-800'
+                        : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
+                    }`}
+                  >
+                    <img
+                      src={image}
+                      alt={`${product.name} - ${index === 0 ? 'Front' : 'Back'}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Product Info */}
@@ -93,10 +205,10 @@ export default function ProductDetail() {
               <div className="space-y-2">
                 <label className="text-xs font-medium text-gray-700 dark:text-gray-300">Size</label>
                 <Select value={selectedSize} onValueChange={setSelectedSize}>
-                  <SelectTrigger className="w-full h-8 text-sm bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus:border-red-500 focus:ring-red-500">
+                  <SelectTrigger className="w-full h-8 text-sm bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus:ring-red-500">
                     <SelectValue placeholder="Select size" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="animate-none">
                     {product.sizes.map((size) => (
                       <SelectItem key={size} value={size} className="text-sm">
                         {size}
@@ -124,7 +236,7 @@ export default function ProductDetail() {
                   variant="outline"
                   size="sm"
                   className="h-7 w-7 p-0 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
-                  onClick={() => setQuantity(quantity + 1)}
+                  onClick={() => setQuantity(Math.min(10, quantity + 1))}
                 >
                   <Plus className="h-3 w-3" />
                 </Button>

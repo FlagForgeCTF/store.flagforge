@@ -23,10 +23,10 @@ export function Header() {
             <img
               src="/flagforge-logo.png"
               alt="FlagForge Logo"
-              className="h-8 w-auto lg:h-10 object-contain"
+              className="h-10 w-auto lg:h-16 object-contain"
             />
             <div>
-              <span className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">
+              <span className="text-xl lg:text-3xl font-bold text-gray-900 dark:text-white">
                 FlagForge
               </span>
             </div>
@@ -56,19 +56,21 @@ export function Header() {
               <ThemeToggle />
             </div>
 
-            <Button
-              variant="outline"
-              size="icon"
-              className="relative border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-red-300 dark:hover:border-red-600 transition-all duration-300 ease-in-out"
-            >
-              <ShoppingCart className="h-4 w-4 transition-transform duration-300 ease-in-out hover:scale-110" />
-              {getTotalItems() > 0 && (
-                <span className="absolute -top-2 -right-2 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-medium transition-all duration-300 ease-in-out animate-pulse">
-                  {getTotalItems()}
-                </span>
-              )}
-              <span className="sr-only">Shopping cart</span>
-            </Button>
+            <Link to="/cart">
+              <Button
+                variant="outline"
+                size="icon"
+                className="relative border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-red-300 dark:hover:border-red-600 transition-all duration-300 ease-in-out"
+              >
+                <ShoppingCart className="h-4 w-4 transition-transform duration-300 ease-in-out hover:scale-110" />
+                {getTotalItems() > 0 && (
+                  <span className="absolute -top-2 -right-2 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-medium transition-all duration-300 ease-in-out">
+                    {getTotalItems()}
+                  </span>
+                )}
+                <span className="sr-only">Shopping cart</span>
+              </Button>
+            </Link>
 
             {/* Mobile Menu Button */}
             <Button
