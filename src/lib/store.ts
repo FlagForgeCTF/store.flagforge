@@ -46,7 +46,7 @@ export const useStore = create<StoreState>()(
           price: 1,
           image: '/src/assets/stickers-pack.jpg',
           category: 'sticker',
-          description: 'Premium waterproof sticker featuring the FlagForge logo and cybersecurity-themed designs. Perfect for laptops, water bottles, and more.',
+          description: 'Premium waterproof sticker featuring the FlagForge logo. Perfect for laptops, water bottles, and more.',
         },
 
       ],

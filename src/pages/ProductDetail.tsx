@@ -284,14 +284,18 @@ export default function ProductDetail() {
                       </td>
                     </tr>
                   )}
-                  <tr className="border-b border-gray-200 dark:border-gray-700">
-                    <th className="text-left py-1.5 pr-2 font-medium text-gray-600 dark:text-gray-400">Material</th>
-                    <td className="py-1.5 text-gray-900 dark:text-white">Premium Cotton Blend</td>
-                  </tr>
-                  <tr>
-                    <th className="text-left py-1.5 pr-2 font-medium text-gray-600 dark:text-gray-400">Care Instructions</th>
-                    <td className="py-1.5 text-gray-900 dark:text-white">Machine wash cold, tumble dry low</td>
-                  </tr>
+                  {product.category === 'tshirt' && (
+                    <>
+                      <tr className="border-b border-gray-200 dark:border-gray-700">
+                        <th className="text-left py-1.5 pr-2 font-medium text-gray-600 dark:text-gray-400">Material</th>
+                        <td className="py-1.5 text-gray-900 dark:text-white">Premium Cotton Blend</td>
+                      </tr>
+                      <tr>
+                        <th className="text-left py-1.5 pr-2 font-medium text-gray-600 dark:text-gray-400">Care Instructions</th>
+                        <td className="py-1.5 text-gray-900 dark:text-white">Machine wash cold, tumble dry low</td>
+                      </tr>
+                    </>
+                  )}
                 </tbody>
               </table>
             </div>
