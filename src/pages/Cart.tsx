@@ -15,20 +15,20 @@ export default function Cart() {
   const getTotalPrice = useStore((state) => state.getTotalPrice);
   const { toast } = useToast();
 
-  const handleQuantityChange = (productId: string, newQuantity: number, selectedSize?: string) => {
+  const handleQuantityChange = (productId: string, newQuantity: number, selectedSize?: string, customName?: string) => {
     if (newQuantity === 0) {
-      removeFromCart(productId, selectedSize);
+      removeFromCart(productId, selectedSize, customName);
       toast({
         title: "Item removed",
         description: "Item has been removed from your cart.",
       });
     } else {
-      updateQuantity(productId, newQuantity, selectedSize);
+      updateQuantity(productId, newQuantity, selectedSize, customName);
     }
   };
 
-  const handleRemoveItem = (productId: string, selectedSize?: string, productName: string) => {
-    removeFromCart(productId, selectedSize);
+  const handleRemoveItem = (productId: string, selectedSize?: string, customName?: string, productName: string) => {
+    removeFromCart(productId, selectedSize, customName);
     toast({
       title: "Item removed",
       description: `${productName} has been removed from your cart.`,
@@ -97,7 +97,7 @@ export default function Cart() {
             <div className="space-y-4">
               {cart.map((item) => (
                 <div
-                  key={`${item.id}-${item.selectedSize || 'no-size'}`}
+                  key={`${item.id}-${item.selectedSize || 'no-size'}-${item.customName || 'no-name'}`}
                   className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow"
                 >
                   {/* Product Image */}
@@ -117,6 +117,7 @@ export default function Cart() {
                     <p className="text-sm text-gray-600 dark:text-gray-400 capitalize">
                       {item.category}
                       {item.selectedSize && ` • Size: ${item.selectedSize}`}
+                      {item.customName && ` • Name: ${item.customName}`}
                     </p>
                     <p className="text-lg font-bold text-red-500 dark:text-red-500">
                       ${item.price}
@@ -129,7 +130,7 @@ export default function Cart() {
                       variant="outline"
                       size="sm"
                       className="h-8 w-8 p-0"
-                      onClick={() => handleQuantityChange(item.id, item.quantity - 1, item.selectedSize)}
+                      onClick={() => handleQuantityChange(item.id, item.quantity - 1, item.selectedSize, item.customName)}
                     >
                       <Minus className="h-3 w-3" />
                     </Button>
@@ -140,7 +141,7 @@ export default function Cart() {
                       variant="outline"
                       size="sm"
                       className="h-8 w-8 p-0"
-                      onClick={() => handleQuantityChange(item.id, Math.min(10, item.quantity + 1), item.selectedSize)}
+                      onClick={() => handleQuantityChange(item.id, Math.min(10, item.quantity + 1), item.selectedSize, item.customName)}
                     >
                       <Plus className="h-3 w-3" />
                     </Button>
@@ -151,7 +152,7 @@ export default function Cart() {
                     variant="outline"
                     size="sm"
                     className="h-8 w-8 p-0 text-red-500 border-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
-                    onClick={() => handleRemoveItem(item.id, item.selectedSize, item.name)}
+                    onClick={() => handleRemoveItem(item.id, item.selectedSize, item.customName, item.name)}
                   >
                     <Trash2 className="h-3 w-3" />
                   </Button>

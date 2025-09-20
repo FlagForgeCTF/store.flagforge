@@ -27,39 +27,22 @@ export default function Checkout() {
     phone: "",
     address: "",
     city: "",
-    postalCode: "",
-    country: "Nepal",
   });
 
   const paymentMethods = [
     {
       id: "esewa",
-      name: "eSewa",
-      description: "Pay securely with eSewa digital wallet",
+      name: "eSewa/FonePay",
+      description: "Pay securely with eSewa or FonePay digital wallet",
       image: "/esewa.png",
       hasImage: true,
     },
     {
-      id: "paypal",
-      name: "PayPal",
-      description: "Pay with your PayPal account",
-      image: "/paypal.png",
-      hasImage: true,
-    },
-    {
-      id: "card",
-      name: "Credit/Debit Card",
-      description: "Visa, Mastercard, American Express",
-      icon: <CreditCard className="w-6 h-6" />,
+      id: "cod",
+      name: "Cash on Delivery",
+      description: "Pay with cash when your order is delivered",
+      icon: "💵",
       hasImage: false,
-      color: "bg-gray-700",
-    },
-    {
-      id: "fonepay",
-      name: "FonePay",
-      description: "Pay with FonePay mobile wallet",
-      image: "/fonepay.png",
-      hasImage: true,
     },
   ];
 
@@ -88,20 +71,18 @@ export default function Checkout() {
       return;
     }
 
-    setIsProcessing(true);
-
-    // Simulate payment processing
-    setTimeout(() => {
+    if (selectedPayment === "cod") {
+      // For Cash on Delivery, directly complete the order
       clearCart();
-      setIsProcessing(false);
-      
       toast({
         title: "Order placed successfully!",
-        description: `Payment via ${paymentMethods.find(p => p.id === selectedPayment)?.name} completed.`,
+        description: "Your order will be delivered and you can pay with cash.",
       });
-      
       navigate("/products");
-    }, 2000);
+    } else {
+      // For eSewa/FonePay, redirect to payment page
+      navigate("/payment");
+    }
   };
 
   if (cart.length === 0) {
@@ -221,50 +202,18 @@ export default function Checkout() {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                  <div>
-                    <Label htmlFor="city" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      City *
-                    </Label>
-                    <Input
-                      id="city"
-                      type="text"
-                      required
-                      value={formData.city}
-                      onChange={(e) => handleInputChange("city", e.target.value)}
-                      className="mt-1"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="postalCode" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Postal Code
-                    </Label>
-                    <Input
-                      id="postalCode"
-                      type="text"
-                      value={formData.postalCode}
-                      onChange={(e) => handleInputChange("postalCode", e.target.value)}
-                      className="mt-1"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="country" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Country *
-                    </Label>
-                    <Select value={formData.country} onValueChange={(value) => handleInputChange("country", value)}>
-                      <SelectTrigger className="mt-1">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Nepal">Nepal</SelectItem>
-                        <SelectItem value="India">India</SelectItem>
-                        <SelectItem value="USA">United States</SelectItem>
-                        <SelectItem value="UK">United Kingdom</SelectItem>
-                        <SelectItem value="Canada">Canada</SelectItem>
-                        <SelectItem value="Australia">Australia</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                <div className="mt-4">
+                  <Label htmlFor="city" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    City *
+                  </Label>
+                  <Input
+                    id="city"
+                    type="text"
+                    required
+                    value={formData.city}
+                    onChange={(e) => handleInputChange("city", e.target.value)}
+                    className="mt-1"
+                  />
                 </div>
               </div>
 
@@ -300,7 +249,7 @@ export default function Checkout() {
                               className="w-8 h-8 object-contain"
                             />
                           ) : (
-                            <div className={`${method.color} w-full h-full flex items-center justify-center text-white`}>
+                            <div className="w-full h-full flex items-center justify-center text-2xl">
                               {method.icon}
                             </div>
                           )}
@@ -327,10 +276,7 @@ export default function Checkout() {
                     <span>Processing Payment...</span>
                   </div>
                 ) : (
-                  <div className="flex items-center justify-center space-x-2">
-                    <Shield className="w-4 h-4" />
-                    <span>Complete Order - ${getTotalPrice().toFixed(2)}</span>
-                  </div>
+                  <span>Complete Order</span>
                 )}
               </Button>
             </form>
@@ -344,7 +290,7 @@ export default function Checkout() {
               {/* Cart Items */}
               <div className="space-y-3 mb-6">
                 {cart.map((item) => (
-                  <div key={`${item.id}-${item.selectedSize || 'no-size'}`} className="flex items-center space-x-3">
+                  <div key={`${item.id}-${item.selectedSize || 'no-size'}-${item.customName || 'no-name'}`} className="flex items-center space-x-3">
                     <img
                       src={item.image}
                       alt={item.name}
@@ -355,7 +301,9 @@ export default function Checkout() {
                         {item.name}
                       </div>
                       <div className="text-xs text-gray-600 dark:text-gray-400">
-                        {item.selectedSize && `Size: ${item.selectedSize} • `}Qty: {item.quantity}
+                        {item.selectedSize && `Size: ${item.selectedSize} • `}
+                        {item.customName && `Name: ${item.customName} • `}
+                        Qty: {item.quantity}
                       </div>
                     </div>
                     <div className="text-sm font-medium text-gray-900 dark:text-white">

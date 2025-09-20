@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useStore } from "@/lib/store";
 import { ShoppingCart, Plus, Minus, ArrowLeft, Heart, ChevronLeft, ChevronRight } from "lucide-react";
@@ -13,6 +14,7 @@ export default function ProductDetail() {
   const products = useStore((state) => state.products);
   const addToCart = useStore((state) => state.addToCart);
   const [selectedSize, setSelectedSize] = useState<string>("");
+  const [customName, setCustomName] = useState<string>("");
   const [quantity, setQuantity] = useState(1);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isImageHovered, setIsImageHovered] = useState(false);
@@ -79,13 +81,31 @@ export default function ProductDetail() {
       return;
     }
 
+    if (product.category === 'tshirt' && !customName.trim()) {
+      toast({
+        title: "Please enter your name",
+        description: "Enter your name for the custom t-shirt",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (product.category === 'tshirt' && customName.length > 8) {
+      toast({
+        title: "Name too long",
+        description: "Name must be 8 letters or less",
+        variant: "destructive",
+      });
+      return;
+    }
+
     for (let i = 0; i < quantity; i++) {
-      addToCart(product, selectedSize || undefined);
+      addToCart(product, selectedSize || undefined, product.category === 'tshirt' ? customName : undefined);
     }
 
     toast({
       title: "Added to cart!",
-      description: `${quantity} x ${product.name} has been added to your cart.`,
+      description: `${quantity} x ${product.name}${product.category === 'tshirt' && customName ? ` (${customName})` : ''} has been added to your cart.`,
     });
   };
 
@@ -216,6 +236,31 @@ export default function ProductDetail() {
                     ))}
                   </SelectContent>
                 </Select>
+              </div>
+            )}
+
+            {/* Custom Name Input for T-shirts */}
+            {product.category === 'tshirt' && (
+              <div className="space-y-2">
+                <label className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                  Your Name <span className="text-red-500">*</span>
+                </label>
+                <Input
+                  type="text"
+                  placeholder="Enter your name (max 8 letters)"
+                  value={customName}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value.length <= 8) {
+                      setCustomName(value);
+                    }
+                  }}
+                  className="w-full h-8 text-sm bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus:ring-red-500 focus:border-red-500"
+                  maxLength={8}
+                />
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  {customName.length}/8 characters - This will be printed on the back of your t-shirt
+                </p>
               </div>
             )}
 

@@ -14,14 +14,15 @@ export interface Product {
 export interface CartItem extends Product {
   quantity: number;
   selectedSize?: string;
+  customName?: string;
 }
 
 interface StoreState {
   products: Product[];
   cart: CartItem[];
-  addToCart: (product: Product, selectedSize?: string) => void;
-  removeFromCart: (productId: string, selectedSize?: string) => void;
-  updateQuantity: (productId: string, quantity: number, selectedSize?: string) => void;
+  addToCart: (product: Product, selectedSize?: string, customName?: string) => void;
+  removeFromCart: (productId: string, selectedSize?: string, customName?: string) => void;
+  updateQuantity: (productId: string, quantity: number, selectedSize?: string, customName?: string) => void;
   clearCart: () => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
@@ -52,40 +53,40 @@ export const useStore = create<StoreState>()(
       ],
       cart: [],
       
-      addToCart: (product, selectedSize) => {
+      addToCart: (product, selectedSize, customName) => {
         set((state) => {
           const existingItem = state.cart.find(
-            (item) => item.id === product.id && item.selectedSize === selectedSize
+            (item) => item.id === product.id && item.selectedSize === selectedSize && item.customName === customName
           );
           
           if (existingItem) {
             return {
               cart: state.cart.map((item) =>
-                item.id === product.id && item.selectedSize === selectedSize
+                item.id === product.id && item.selectedSize === selectedSize && item.customName === customName
                   ? { ...item, quantity: item.quantity + 1 }
                   : item
               ),
             };
           } else {
             return {
-              cart: [...state.cart, { ...product, quantity: 1, selectedSize }],
+              cart: [...state.cart, { ...product, quantity: 1, selectedSize, customName }],
             };
           }
         });
       },
       
-      removeFromCart: (productId, selectedSize) => {
+      removeFromCart: (productId, selectedSize, customName) => {
         set((state) => ({
           cart: state.cart.filter(
-            (item) => !(item.id === productId && item.selectedSize === selectedSize)
+            (item) => !(item.id === productId && item.selectedSize === selectedSize && item.customName === customName)
           ),
         }));
       },
       
-      updateQuantity: (productId, quantity, selectedSize) => {
+      updateQuantity: (productId, quantity, selectedSize, customName) => {
         set((state) => ({
           cart: state.cart.map((item) =>
-            item.id === productId && item.selectedSize === selectedSize
+            item.id === productId && item.selectedSize === selectedSize && item.customName === customName
               ? { ...item, quantity: Math.max(0, quantity) }
               : item
           ).filter((item) => item.quantity > 0),
