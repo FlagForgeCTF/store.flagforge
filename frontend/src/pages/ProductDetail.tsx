@@ -228,7 +228,7 @@ export default function ProductDetail() {
                   <SelectTrigger className="w-full h-8 text-sm bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus:ring-red-500">
                     <SelectValue placeholder="Select size" />
                   </SelectTrigger>
-                  <SelectContent className="animate-none">
+                  <SelectContent>
                     {product.sizes.map((size) => (
                       <SelectItem key={size} value={size} className="text-sm">
                         {size}

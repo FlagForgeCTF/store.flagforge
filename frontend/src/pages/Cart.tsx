@@ -27,8 +27,12 @@ export default function Cart() {
     }
   };
 
-  const handleRemoveItem = (productId: string, selectedSize?: string, customName?: string, productName: string) => {
-    removeFromCart(productId, selectedSize, customName);
+const handleRemoveItem = (
+  productId: string,
+  selectedSize?: string,
+  customName?: string,
+  productName?: string
+) => {    removeFromCart(productId, selectedSize, customName);
     toast({
       title: "Item removed",
       description: `${productName} has been removed from your cart.`,
