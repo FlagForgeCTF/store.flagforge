@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { type Product } from "@/lib/store";
+import { formatDualCurrency } from "@/lib/currency";
 
 interface ProductCardProps {
   product: Product;
@@ -40,9 +41,9 @@ export function ProductCard({ product }: ProductCardProps) {
         </Link>
       </h3>
       
-      <span className="price text-lg font-bold text-red-500 dark:text-red-500 transition-all duration-300 ease-in-out group-hover:scale-110 inline-block">
-        ${product.price}
-      </span>
+      <div className="price text-sm font-bold text-red-500 dark:text-red-500 transition-all duration-300 ease-in-out group-hover:scale-110 inline-block">
+        {formatDualCurrency(product.price)}
+      </div>
     </div>
   );
 }

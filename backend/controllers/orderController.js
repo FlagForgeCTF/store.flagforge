@@ -1,5 +1,6 @@
 import Order from '../models/Order.js';
 import { sendOrderEmail } from '../config/email.js';
+import { getCurrencyDisplay } from '../utils/currency.js';
 
 // Create new order
 export const createOrder = async (req, res) => {
@@ -48,17 +49,22 @@ export const createOrder = async (req, res) => {
         address: shippingAddress.address,
         city: shippingAddress.city,
       },
-      items: items.map(item => ({
-        id: item.id,
-        name: item.name,
-        price: item.price,
-        image: item.image,
-        quantity: item.quantity,
-        selectedSize: item.selectedSize,
-        customName: item.customName,
-        category: item.category,
-      })),
+      items: items.map(item => {
+        const itemCurrencyDisplay = getCurrencyDisplay(item.price);
+        return {
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          priceNpr: itemCurrencyDisplay.npr,
+          image: item.image,
+          quantity: item.quantity,
+          selectedSize: item.selectedSize,
+          customName: item.customName,
+          category: item.category,
+        };
+      }),
       totalAmount,
+      totalAmountNpr: getCurrencyDisplay(totalAmount).npr,
       paymentMethod,
       status: 'pending',
       paymentStatus: paymentMethod === 'cod' ? 'pending' : 'pending',

@@ -10,6 +10,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useStore } from "@/lib/store";
 import { ArrowLeft, CreditCard, Smartphone, Shield, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { formatDualCurrency } from "@/lib/currency";
+import { orderService, type OrderData } from "@/services/orderService";
 
 export default function Checkout() {
   const cart = useStore((state) => state.cart);
@@ -71,17 +73,71 @@ export default function Checkout() {
       return;
     }
 
-    if (selectedPayment === "cod") {
-      // For Cash on Delivery, directly complete the order
-      clearCart();
+    // Prepare order data
+    const orderData: OrderData = {
+      customer: {
+        email: formData.email,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        phone: formData.phone,
+      },
+      shippingAddress: {
+        address: formData.address,
+        city: formData.city,
+      },
+      items: cart.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        image: item.image,
+        quantity: item.quantity,
+        selectedSize: item.selectedSize,
+        customName: item.customName,
+        category: item.category,
+      })),
+      totalAmount: getTotalPrice(),
+      paymentMethod: selectedPayment as 'cod' | 'esewa',
+    };
+
+    // Validate order data
+    const validation = orderService.validateOrderData(orderData);
+    if (!validation.isValid) {
       toast({
-        title: "Order placed successfully!",
-        description: "Your order will be delivered and you can pay with cash.",
+        title: "Please fix the following errors:",
+        description: validation.errors.join(', '),
+        variant: "destructive",
       });
-      navigate("/products");
+      return;
+    }
+
+    setIsProcessing(true);
+
+    if (selectedPayment === "cod") {
+      // For Cash on Delivery, create order directly
+      const result = await orderService.createCODOrder(orderData);
+      
+      if (result.success) {
+        clearCart();
+        
+        // Reset form
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          address: "",
+          city: "",
+        });
+        setSelectedPayment("");
+        
+        navigate("/products");
+      }
+      
+      setIsProcessing(false);
     } else {
-      // For eSewa/FonePay, redirect to payment page
-      navigate("/payment");
+      // For eSewa/FonePay, redirect to payment page with order data
+      navigate("/payment", { state: { orderData } });
+      setIsProcessing(false);
     }
   };
 
@@ -307,7 +363,7 @@ export default function Checkout() {
                       </div>
                     </div>
                     <div className="text-sm font-medium text-gray-900 dark:text-white">
-                      ${(item.price * item.quantity).toFixed(2)}
+                      {formatDualCurrency(item.price * item.quantity)}
                     </div>
                   </div>
                 ))}
@@ -320,7 +376,7 @@ export default function Checkout() {
                     Subtotal ({cart.reduce((total, item) => total + item.quantity, 0)} items)
                   </span>
                   <span className="text-gray-900 dark:text-white">
-                    ${getTotalPrice().toFixed(2)}
+                    {formatDualCurrency(getTotalPrice())}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
@@ -335,7 +391,7 @@ export default function Checkout() {
                   <div className="flex justify-between text-lg font-bold">
                     <span className="text-gray-900 dark:text-white">Total</span>
                     <span className="text-red-500 dark:text-red-500">
-                      ${getTotalPrice().toFixed(2)}
+                      {formatDualCurrency(getTotalPrice())}
                     </span>
                   </div>
                 </div>

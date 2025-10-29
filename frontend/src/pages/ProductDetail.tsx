@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useStore } from "@/lib/store";
 import { ShoppingCart, Plus, Minus, ArrowLeft, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { formatDualCurrency } from "@/lib/currency";
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -216,7 +217,7 @@ export default function ProductDetail() {
           <div className="space-y-4">
             <div>
               <h1 className="text-xl font-bold text-gray-900 dark:text-white mb-1">{product.name}</h1>
-              <p className="text-lg font-bold text-red-500 dark:text-red-500 mb-2">${product.price}</p>
+              <p className="text-lg font-bold text-red-500 dark:text-red-500 mb-2">{formatDualCurrency(product.price)}</p>
               <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{product.description}</p>
             </div>
 

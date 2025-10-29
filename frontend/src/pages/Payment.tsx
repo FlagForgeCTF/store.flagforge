@@ -1,26 +1,67 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useStore } from "@/lib/store";
-import { ArrowLeft, Upload, CheckCircle } from "lucide-react";
+import { ArrowLeft, Upload, CheckCircle, ImageIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { orderService, type OrderData } from "@/services/orderService";
 
 export default function Payment() {
   const clearCart = useStore((state) => state.clearCart);
+  const getTotalPrice = useStore((state) => state.getTotalPrice);
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   
   const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  
+  // Get order data from navigation state (passed from checkout)
+  const orderData: OrderData | undefined = location.state?.orderData;
+
+  // Cleanup preview URL on unmount
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Validate file size (5MB max)
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: "File too large",
+          description: "Please select an image smaller than 5MB.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: "Invalid file type",
+          description: "Please select an image file.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       setPaymentScreenshot(file);
+      
+      // Create preview URL
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
     }
   };
 
@@ -36,20 +77,34 @@ export default function Payment() {
       return;
     }
 
-    setIsSubmitting(true);
-
-    // Simulate payment verification
-    setTimeout(() => {
-      clearCart();
-      setIsSubmitting(false);
-      
+    if (!orderData) {
       toast({
-        title: "Payment submitted successfully!",
-        description: "We'll verify your payment and process your order soon.",
+        title: "Order data missing",
+        description: "Please go back to checkout and try again.",
+        variant: "destructive",
       });
+      navigate("/checkout");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setIsUploading(true);
+
+    try {
+      const result = await orderService.createOrderWithPayment(orderData, paymentScreenshot);
       
-      navigate("/products");
-    }, 2000);
+      if (result.success) {
+        // Clear cart and navigate
+        clearCart();
+        navigate("/products");
+      }
+      
+    } catch (error) {
+      console.error('Payment submission error:', error);
+    } finally {
+      setIsSubmitting(false);
+      setIsUploading(false);
+    }
   };
 
   return (
@@ -66,6 +121,33 @@ export default function Payment() {
 
         <div className="max-w-2xl mx-auto">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Complete Your Payment</h1>
+
+          {/* Order Summary */}
+          {orderData && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 mb-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Order Summary</h3>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-600 dark:text-gray-400">Items:</span>
+                  <span className="text-gray-900 dark:text-white">
+                    {orderData.items.reduce((total: number, item: any) => total + item.quantity, 0)}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600 dark:text-gray-400">Total Amount:</span>
+                  <span className="text-red-500 dark:text-red-500 font-semibold">
+                    ${orderData.totalAmount.toFixed(2)} / Rs. {(orderData.totalAmount * 140).toLocaleString('en-IN')}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600 dark:text-gray-400">Customer:</span>
+                  <span className="text-gray-900 dark:text-white">
+                    {orderData.customer.firstName} {orderData.customer.lastName}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 text-center">Scan QR Code to Pay</h2>
@@ -107,21 +189,35 @@ export default function Payment() {
                   />
                 </div>
                 {paymentScreenshot && (
-                  <p className="text-sm text-green-600 dark:text-green-400 mt-2">
-                    ✓ {paymentScreenshot.name} selected
-                  </p>
+                  <div className="mt-3 space-y-2">
+                    <p className="text-sm text-green-600 dark:text-green-400">
+                      ✓ {paymentScreenshot.name} selected ({(paymentScreenshot.size / 1024 / 1024).toFixed(2)} MB)
+                    </p>
+                    {previewUrl && (
+                      <div className="relative w-32 h-32 border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden">
+                        <img
+                          src={previewUrl}
+                          alt="Payment screenshot preview"
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                          <ImageIcon className="w-6 h-6 text-white" />
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
 
               <Button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !paymentScreenshot}
                 className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg font-medium disabled:opacity-50"
               >
                 {isSubmitting ? (
                   <div className="flex items-center justify-center space-x-2">
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    <span>Submitting...</span>
+                    <span>{isUploading ? 'Uploading...' : 'Processing...'}</span>
                   </div>
                 ) : (
                   <div className="flex items-center justify-center space-x-2">

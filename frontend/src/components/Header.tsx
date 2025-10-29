@@ -12,7 +12,9 @@ export function Header() {
 
   const isActive = (path: string) => location.pathname === path;
 
-  const navItems = [];
+  const navItems = [
+    { name: "API Test", path: "/api-test" }
+  ];
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm transition-all duration-300 ease-in-out">

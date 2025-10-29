@@ -13,6 +13,10 @@ const orderItemSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  priceNpr: {
+    type: Number,
+    required: true,
+  },
   image: {
     type: String,
     required: true,
@@ -64,6 +68,10 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  totalAmountNpr: {
+    type: Number,
+    required: true,
+  },
   status: {
     type: String,
     enum: ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'],
@@ -78,6 +86,10 @@ const orderSchema = new mongoose.Schema({
     type: String,
     enum: ['esewa', 'cod'],
     required: true,
+  },
+  paymentScreenshotUrl: {
+    type: String,
+    default: null,
   },
 }, {
   timestamps: true,

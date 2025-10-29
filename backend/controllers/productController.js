@@ -1,4 +1,5 @@
 import Product from '../models/Product.js';
+import { getCurrencyDisplay } from '../utils/currency.js';
 
 // Get all products
 export const getProducts = async (req, res) => {
@@ -6,15 +7,19 @@ export const getProducts = async (req, res) => {
     const products = await Product.find({ inStock: true });
     
     // Transform MongoDB documents to match frontend interface
-    const transformedProducts = products.map(product => ({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      category: product.category,
-      description: product.description,
-      sizes: product.sizes || undefined,
-    }));
+    const transformedProducts = products.map(product => {
+      const currencyDisplay = getCurrencyDisplay(product.price);
+      return {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        priceNpr: currencyDisplay.npr,
+        image: product.image,
+        category: product.category,
+        description: product.description,
+        sizes: product.sizes || undefined,
+      };
+    });
     
     res.json(transformedProducts);
   } catch (error) {
@@ -31,10 +36,12 @@ export const getProductById = async (req, res) => {
     }
     
     // Transform MongoDB document to match frontend interface
+    const currencyDisplay = getCurrencyDisplay(product.price);
     const transformedProduct = {
       id: product.id,
       name: product.name,
       price: product.price,
+      priceNpr: currencyDisplay.npr,
       image: product.image,
       category: product.category,
       description: product.description,
@@ -69,7 +76,7 @@ export const seedProducts = async (req, res) => {
         id: '1',
         name: 'FlagForge Tshirt',
         price: 15,
-        image: '/src/assets/tshirt-flagforge.jpg',
+        image: '/images/tshirt-flagforge.jpg',
         category: 'tshirt',
         description: 'Show your FlagForge pride with our premium logo tee. Perfect for CTF competitions and daily wear. Made from high-quality cotton blend for maximum comfort.',
         sizes: ['S', 'M', 'L', 'XL', 'XXL'],
@@ -79,7 +86,7 @@ export const seedProducts = async (req, res) => {
         id: '2',
         name: 'FlagForge Sticker',
         price: 1,
-        image: '/src/assets/stickers-pack.jpg',
+        image: '/images/stickers-pack.jpg',
         category: 'sticker',
         description: 'Premium waterproof sticker featuring the FlagForge logo. Perfect for laptops, water bottles, and more.',
         inStock: true,

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useStore } from "@/lib/store";
 import { Plus, Minus, Trash2, ArrowLeft, ShoppingBag } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { formatDualCurrency } from "@/lib/currency";
 
 export default function Cart() {
   const cart = useStore((state) => state.cart);
@@ -123,8 +124,8 @@ const handleRemoveItem = (
                       {item.selectedSize && ` • Size: ${item.selectedSize}`}
                       {item.customName && ` • Name: ${item.customName}`}
                     </p>
-                    <p className="text-lg font-bold text-red-500 dark:text-red-500">
-                      ${item.price}
+                    <p className="text-sm font-bold text-red-500 dark:text-red-500">
+                      {formatDualCurrency(item.price)}
                     </p>
                   </div>
 
@@ -176,7 +177,7 @@ const handleRemoveItem = (
                     Items ({cart.reduce((total, item) => total + item.quantity, 0)})
                   </span>
                   <span className="text-gray-900 dark:text-white">
-                    ${getTotalPrice().toFixed(2)}
+                    {formatDualCurrency(getTotalPrice())}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
@@ -187,7 +188,7 @@ const handleRemoveItem = (
                   <div className="flex justify-between text-lg font-bold">
                     <span className="text-gray-900 dark:text-white">Total</span>
                     <span className="text-red-500 dark:text-red-500">
-                      ${getTotalPrice().toFixed(2)}
+                      {formatDualCurrency(getTotalPrice())}
                     </span>
                   </div>
                 </div>
