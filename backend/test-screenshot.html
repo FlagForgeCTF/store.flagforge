@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screenshot Upload Test - FlagForge Store</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px dashed #ddd;
+            border-radius: 5px;
+            background-color: #fafafa;
+        }
+        input[type="file"]:hover {
+            border-color: #dc2626;
+        }
+        button {
+            background-color: #dc2626;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #b91c1c;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+        .error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+        .preview {
+            max-width: 300px;
+            max-height: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .file-info {
+            background-color: #f0f9ff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .uploaded-image {
+            max-width: 400px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-success { background-color: #10b981; }
+        .status-error { background-color: #ef4444; }
+        .status-warning { background-color: #f59e0b; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📷 Screenshot Upload Test - FlagForge Store</h1>
+        <p>Test the payment screenshot upload functionality.</p>
+        
+        <div class="form-group">
+            <label for="screenshot">Select Screenshot:</label>
+            <input type="file" id="screenshot" accept="image/*" onchange="handleFileSelect(event)">
+            <div id="fileInfo" class="file-info" style="display: none;"></div>
+            <img id="preview" class="preview" style="display: none;" alt="Preview">
+        </div>
+        
+        <button onclick="uploadScreenshot()" id="uploadBtn" disabled>Upload Screenshot</button>
+        <button onclick="clearSelection()" id="clearBtn" disabled>Clear Selection</button>
+        
+        <div id="result" class="result"></div>
+    </div>
+
+    <div class="container">
+        <h2>🔧 System Status</h2>
+        <div id="systemStatus">
+            <p><span class="status-indicator status-warning"></span>Checking system status...</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>📋 Upload Requirements</h2>
+        <ul>
+            <li><strong>File Types:</strong> JPG, PNG, GIF, WebP</li>
+            <li><strong>Max Size:</strong> 5MB</li>
+            <li><strong>Max Dimensions:</strong> Images larger than 800x800 will be resized</li>
+            <li><strong>Storage:</strong> Cloudinary (flagforge-payments folder)</li>
+            <li><strong>Quality:</strong> Auto-optimized</li>
+        </ul>
+    </div>
+
+    <script>
+        let selectedFile = null;
+
+        // Check system status on load
+        window.onload = function() {
+            checkSystemStatus();
+        };
+
+        async function checkSystemStatus() {
+            const statusDiv = document.getElementById('systemStatus');
+            
+            try {
+                // Test server connection
+                const healthResponse = await fetch('/api/health');
+                if (healthResponse.ok) {
+                    const healthData = await healthResponse.json();
+                    statusDiv.innerHTML = `
+                        <p><span class="status-indicator status-success"></span>Server: Online (${healthData.version})</p>
+                        <p><span class="status-indicator status-success"></span>API: Accessible</p>
+                        <p><span class="status-indicator status-success"></span>Upload Endpoint: Ready</p>
+                    `;
+                } else {
+                    throw new Error('Server not responding');
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `
+                    <p><span class="status-indicator status-error"></span>Server: Offline or Error</p>
+                    <p><span class="status-indicator status-error"></span>Error: ${error.message}</p>
+                `;
+            }
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            const fileInfo = document.getElementById('fileInfo');
+            const preview = document.getElementById('preview');
+            const uploadBtn = document.getElementById('uploadBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            
+            if (file) {
+                selectedFile = file;
+                
+                // Show file info
+                const sizeInMB = (file.size / 1024 / 1024).toFixed(2);
+                const sizeStatus = file.size > 5 * 1024 * 1024 ? '❌ Too large!' : '✅ Size OK';
+                
+                fileInfo.innerHTML = `
+                    <strong>File:</strong> ${file.name}<br>
+                    <strong>Size:</strong> ${sizeInMB} MB ${sizeStatus}<br>
+                    <strong>Type:</strong> ${file.type}<br>
+                    <strong>Last Modified:</strong> ${new Date(file.lastModified).toLocaleString()}
+                `;
+                fileInfo.style.display = 'block';
+                
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+                
+                // Enable buttons
+                uploadBtn.disabled = file.size > 5 * 1024 * 1024;
+                clearBtn.disabled = false;
+                
+            } else {
+                clearSelection();
+            }
+        }
+
+        function clearSelection() {
+            selectedFile = null;
+            document.getElementById('screenshot').value = '';
+            document.getElementById('fileInfo').style.display = 'none';
+            document.getElementById('preview').style.display = 'none';
+            document.getElementById('uploadBtn').disabled = true;
+            document.getElementById('clearBtn').disabled = true;
+            document.getElementById('result').style.display = 'none';
+        }
+
+        async function uploadScreenshot() {
+            if (!selectedFile) {
+                alert('Please select a file first');
+                return;
+            }
+
+            const uploadBtn = document.getElementById('uploadBtn');
+            const result = document.getElementById('result');
+            
+            // Disable button and show loading
+            uploadBtn.disabled = true;
+            uploadBtn.textContent = 'Uploading...';
+            result.style.display = 'none';
+            
+            try {
+                const formData = new FormData();
+                formData.append('screenshot', selectedFile);
+                
+                const response = await fetch('/api/payments/upload-screenshot', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const responseData = await response.json();
+                
+                if (response.ok) {
+                    result.className = 'result success';
+                    result.innerHTML = `
+                        <strong>✅ Upload Successful!</strong><br>
+                        <strong>Image URL:</strong> <a href="${responseData.imageUrl}" target="_blank">${responseData.imageUrl}</a><br>
+                        <strong>Public ID:</strong> ${responseData.publicId}<br>
+                        <strong>Message:</strong> ${responseData.message}<br>
+                        <img src="${responseData.imageUrl}" class="uploaded-image" alt="Uploaded screenshot">
+                    `;
+                } else {
+                    throw new Error(responseData.message || 'Upload failed');
+                }
+                
+            } catch (error) {
+                result.className = 'result error';
+                result.innerHTML = `
+                    <strong>❌ Upload Failed!</strong><br>
+                    <strong>Error:</strong> ${error.message}<br>
+                    <strong>Troubleshooting:</strong>
+                    <ul>
+                        <li>Check file size (max 5MB)</li>
+                        <li>Ensure file is an image (JPG, PNG, GIF, WebP)</li>
+                        <li>Check internet connection</li>
+                        <li>Verify Cloudinary configuration</li>
+                    </ul>
+                `;
+            } finally {
+                uploadBtn.disabled = false;
+                uploadBtn.textContent = 'Upload Screenshot';
+                result.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

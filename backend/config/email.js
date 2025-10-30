@@ -5,12 +5,12 @@ dotenv.config();
 
 // Create transporter using Brevo SMTP
 const transporter = nodemailer.createTransport({
-  host: process.env.MAIL_HOST || 'smtp-relay.brevo.com',
-  port: Number(process.env.MAIL_PORT) || 587,
+  host: process.env.BREVO_HOST || 'smtp-relay.brevo.com',
+  port: Number(process.env.BREVO_PORT) || 587,
   secure: false, // true if using port 465
   auth: {
-    user: process.env.MAIL_USER, // your Brevo email
-    pass: process.env.MAIL_PASS, // your Brevo SMTP key
+    user: process.env.BREVO_USER, // your Brevo email
+    pass: process.env.BREVO_PASS, // your Brevo SMTP key
   },
 });
 
@@ -23,7 +23,7 @@ const transporter = nodemailer.createTransport({
 export async function sendCustomMail(to, subject, htmlContent) {
   try {
     await transporter.sendMail({
-      from: process.env.MAIL_FROM || '"FlagForge Store" <noreply@flagforge.com>',
+      from: process.env.FROM_EMAIL || '"FlagForge Store" <noreply@flagforge.com>',
       to,
       subject,
       html: htmlContent,
